@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>InteriorHub - Compare Services</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.livspace-cdn.com/w:1920/plain/https://d3gq2merok8n5r.cloudfront.net/abhinav/design-ideas-thumbnails-1628773921-7vSz1/jfm-2025-1738441429-LLvdg/ai-1738441440-R9rjW/59-1739356728-TX2Wg.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: white;
+      margin-top: 5rem;
+    }
+
+    h2 {
+      font-weight: normal;
+      font-size: 1.5rem;
+      color: #f0f0f0;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      display: inline-block;
+      margin: 0.75rem;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      font-weight: bold;
+      color: white;
+    }
+
+    .card input[type="checkbox"] {
+      margin-right: 0.5rem;
+      transform: scale(1.2);
+    }
+
+    select, button {
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      border: none;
+      margin-top: 1rem;
+    }
+
+    select {
+      background-color: #d32f2f;
+      color: white;
+    }
+
+    button {
+      background-color: #d32f2f;
+      color: white;
+      cursor: pointer;
+      margin: 1rem 0.5rem;
+    }
+
+    table {
+      width: 60%;
+      margin: 2rem auto 1rem;
+      border-collapse: collapse;
+      background: rgba(83, 78, 78, 0.1);
+    }
+
+    th {
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+      }
+      
+      td {
+        padding: 0.75rem;
+        border: 1px solid rgba(248, 247, 247, 0.2);
+        color:rgb(244, 244, 244); /* Dark brown */
+        font-weight: bold;
+      }
+      
+      
+
+    a.back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.6rem 1.5rem;
+      background-color: #d32f2f;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>InteriorHub</h1>
+  <h2>Compare Service Prices</h2>
+
+  <form method="POST">
+    <div>
+      <input type="checkbox" id="selectAll" onclick="toggleAll(this)">
+      <label for="selectAll" style="font-weight: bold;">Select All Companies</label>
+    </div>
+
+    <div>
+      {% for company in companies %}
+        <label class="card">
+          <input type="checkbox" name="companies" value="{{ company.id }}" class="company-checkbox"
+          {% if company.id|string in selected_ids %}checked{% endif %}>
+          {{ company.name }}
+        </label>
+      {% endfor %}
+    </div>
+
+    <div>
+      <label for="service">Select a service:</label><br>
+      <select name="service" id="service">
+        <option value="Bedroom" {% if selected_service == 'Bedroom' %}selected{% endif %}>Bedroom</option>
+        <option value="Kitchen" {% if selected_service == 'Kitchen' %}selected{% endif %}>Kitchen</option>
+        <option value="Living Room" {% if selected_service == 'Living Room' %}selected{% endif %}>Living Room</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" name="compare" value="yes">Compare</button>
+    </div>
+  </form>
+
+  {% if results %}
+    <form method="POST">
+      <input type="hidden" name="selected_service" value="{{ selected_service }}">
+      {% for id in selected_ids %}
+        <input type="hidden" name="companies" value="{{ id }}">
+      {% endfor %}
+      <button type="submit" name="sort" value="low_to_high">Sort: Low to High</button>
+      <button type="submit" name="sort" value="high_to_low">Sort: High to Low</button>
+    </form>
+
+    <h2>Prices for {{ selected_service }}</h2>
+    <table>
+      <tr>
+        <th>Company</th>
+        <th>Price (৳)</th>
+      </tr>
+      {% for item in results %}
+        <tr>
+          <td>{{ item.company }}</td>
+          <td>{{ item.price }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+
+  <a class="back-link" href="/">← Back to Home</a>
+
+  <script>
+    function toggleAll(source) {
+      const checkboxes = document.querySelectorAll('.company-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = source.checked;
+      });
+    }
+  </script>
+
+</body>
+</html>

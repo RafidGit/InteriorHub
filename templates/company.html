@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>InteriorHub - {{ company.name }}</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.livspace-cdn.com/w:1920/plain/https://d3gq2merok8n5r.cloudfront.net/abhinav/ond-1634120396-Obfdc/1-2025-1736068988-NDPD1/jfm-1736069001-9OxTK/wall-paint-1736166302-DIygn/wallpaint-21-1740478913-I2nlR.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: #d32f2f;
+      margin-top: 5rem;
+    }
+
+    h2 {
+      font-weight: normal;
+      font-size: 2rem;
+      color: white;
+      margin-bottom: 2rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 2rem;
+    }
+
+    li {
+      font-size: 1.25rem;
+      margin: 1rem auto;
+      background-color: rgba(255,255,255,0.12);
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      width: max-content;
+      color: #ff8f00; /* orange price text */
+      font-weight: bold;
+      backdrop-filter: blur(4px);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 2.5rem;
+      padding: 0.6rem 1.5rem;
+      background-color: #d32f2f;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>InteriorHub</h1>
+  <h2>{{ company.name }}</h2>
+
+  <ul>
+    {% for service in services %}
+      <li>{{ service.name }} – ৳{{ service.price }}</li>
+    {% endfor %}
+  </ul>
+
+  <a class="back-link" href="/">← Back to All Companies</a>
+
+</body>
+</html>
